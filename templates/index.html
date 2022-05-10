@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Visualization Final Project</title>
+
+  <script src="{{ url_for('static', filename='js/d3.v4.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/jquery-2.2.4.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/queue.v1.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/d3-tip.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/topojson.min.js')}}"></script>
+  <script src="https://d3js.org/d3-color.v2.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v2.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v2.min.js"></script>
+  <script src="https://d3js.org/d3-time.v2.min.js"></script>
+  <script src="https://d3js.org/d3-time-format.v3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+
+
+
+  <!-- <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/button.css')}}" />
+  <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/main.css')}}" />
+  <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/d3-tip.css')}}" />
+  <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/parallel.css')}}" /> -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/inspcetor.css')}}">
+
+  <!-- <script src="{{ url_for('static', filename='js/parallelCoords.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/worldMap.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/barChart.js')}}"></script> -->
+<script src="{{ url_for('static', filename='js/donut.js')}}"></script>
+
+  <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/style.css')}}" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script type="module">
+  import { updateWorldMap, createWorldMap } from './static/js/worldMap.js'
+  import { createLineChart } from './static/js/line-chart.module.js'
+  import { createMdsPlot } from './static/js/mds-plot.module.js'
+  import { createBubbleScatterplot } from './static/js/bubble-scatterplot.module.js'
+  import { createParallelCoordsPlot } from './static/js/parallel-coords.module.js'
+  import {Runtime, Library, Inspector} from "./static/js/runtime.js";
+  import { define } from "./static/js/race.js";
+
+
+
+  var _selectedCountries = [];
+
+
+let Attrelement = document.getElementById("options_factor");
+
+    d3.csv("/static/data/Visualization_final.csv", function (err, demoData) {
+ 
+    
+      _selectedCountries = [];
+     console.log(demoData);
+      let demographicData = cleanData(demoData);
+      // localStorage.setItem('data', JSON.stringify(demographicData));
+      console.log("in Index:");
+    console.log(demographicData);
+      
+      console.log(demographicData);
+      let filteredDemographicData = demographicData;
+ 
+      createLineChart("#parallel-coordinates-plot", demographicData ,"GDP");
+      createWorldMap("#world-map", demographicData , "GDP") ;
+      createBubbleScatterplot("#bubble-scatterplot", demographicData , "Life_Expectancy");
+      createParallelCoordsPlot("#time-series-line-chart", demographicData);
+      
+      
+     // listing to data selection changes
+     document.addEventListener("worldMapClicked", function (event) {
+
+       _selectedCountries = event.detail.selectedCountries;
+       if (_selectedCountries.length === 0) {
+         filteredDemographicData = demographicData;
+       } else {
+         filteredDemographicData = demographicData.filter(el => _selectedCountries.includes(el.country_name));
+       }
+       console.log("in update block")
+       console.log(filteredDemographicData);
+       
+       console.log(filteredDemographicData);
+        var attr= document.getElementById("options_factor").value; 
+        var attrB=document.getElementById("options_factor").value; 
+       console.log(document.getElementById("options_factor").value);
+       if(!attr)
+       {
+       console.log("no attr");
+           attr="GDP";
+           attrB="Life_Expectancy"
+           }
+     
+       // update time line chart
+       createLineChart("#parallel-coordinates-plot", filteredDemographicData , attr);
+     createBubbleScatterplot("#bubble-scatterplot", filteredDemographicData , attrB);
+    createParallelCoordsPlot("#time-series-line-chart", filteredDemographicData);
+    });
+    
+    
+      // event listener for bubblePlotBrushed
+      document.addEventListener("bubblePlotBrushed", function (event) {
+        _selectedCountries = event.detail.selectedCountries;
+        
+         var attr= document.getElementById("options_factor").value;     
+         console.log(document.getElementById("options_factor").value);
+         if(!attr)
+         {
+         console.log("no attr");
+             attr="GDP";
+             }
+       
+
+        // update time line chart
+        if (_selectedCountries.length === 0) {
+          createLineChart("#parallel-coordinates-plot", demographicData , attr);
+          createWorldMap("#world-map", demographicData , attr);
+          createBubbleScatterplot("#bubble-scatterplot", demographicData ,"Life_Expectancy" );
+        createParallelCoordsPlot("#time-series-line-chart", demographicData);
+
+        } else {
+          filteredDemographicData = demographicData.filter(el => _selectedCountries.includes(el.country_name));
+          createLineChart("#parallel-coordinates-plot", filteredDemographicData , attr);
+          updateWorldMap("#world-map", filteredDemographicData , attr);
+                    createParallelCoordsPlot("#time-series-line-chart", filteredDemographicData);
+          
+        }
+      })
+
+    
+ Attrelement.addEventListener("change", function (event) {
+ 
+ console.log("in attr listener");
+
+let optionSelected = Attrelement.value;
+ console.log(optionSelected);
+       createLineChart("#parallel-coordinates-plot", demographicData ,optionSelected);
+      createWorldMap("#world-map", demographicData , optionSelected) ;
+     createBubbleScatterplot("#bubble-scatterplot", demographicData , optionSelected);
+
+   
+});
+document.addEventListener("change", function (event) {
+ 
+ console.log("in donut event listener");
+
+let optionSelected =  event.detail.data;
+ console.log(optionSelected);
+       createLineChart("#parallel-coordinates-plot", demographicData ,optionSelected);
+      createWorldMap("#world-map", demographicData , optionSelected) ;
+     createBubbleScatterplot("#bubble-scatterplot", demographicData , optionSelected);
+     
+  
+    setVisible("#donut-charts",false)
+    setVisible("#race",true)
+        localStorage.setItem('data',optionSelected);
+       const runtime = new Runtime();
+      const main = runtime.module(define, Inspector.into('#race'));
+      
+      let element = document.getElementById("back");
+    let hidden = element.getAttribute("hidden");
+    console.log("button:")
+    console.log(element)
+
+    if (hidden) {
+       element.removeAttribute("hidden");
+    }
+      
+
+   
+});
+document.addEventListener("timePlotBrushed", function (event) {
+        let timeRange = [event.detail.timeRange[0].getFullYear(), event.detail.timeRange[1].getFullYear()];
+        if (_selectedCountries.length === 0) {
+          filteredDemographicData = demographicData
+        } else {
+          filteredDemographicData = demographicData.filter(countryData => _selectedCountries.includes(countryData.country_name))
+        }
+
+        filteredDemographicData = filteredDemographicData.map(countryData => {
+
+          let yearwiseData = countryData.yearwiseData.filter(yearlyData => {
+            let year = parseInt(yearlyData.year)
+            return (year >= parseInt(timeRange[0]) && year <= parseInt(timeRange[1]))
+          })
+
+          return ({
+            "country_name": countryData.country_name,
+            "yearwiseData": yearwiseData
+          })
+        })
+
+        console.log(filteredDemographicData);
+        var attr= document.getElementById("options_factor").value; 
+        var attrB=document.getElementById("options_factor").value; 
+       console.log(document.getElementById("options_factor").value);
+       if(!attr)
+       {
+       console.log("no attr");
+           attr="GDP";
+           attrB="Life_Expectancy"
+           }
+        // update world map
+        updateWorldMap("#world-map", filteredDemographicData,attr);
+       createBubbleScatterplot("#bubble-scatterplot", filteredDemographicData , attrB);
+    createParallelCoordsPlot("#time-series-line-chart", filteredDemographicData);
+      })
+      
+     })
+     
+     
+
+    function resetData() {
+      _selectedCountries = []
+
+      _selectedCountries = [];
+      d3.csv("/static/data/Clean-Data.csv", function (err, demoData) {
+
+        setVisible('#mds-corr-plot', false);
+        setVisible('#mds-plot-loader', true);
+        let demographicData = cleanData(demoData);
+        createLineChart("#time-series-line-chart", demographicData);
+        createWorldMap("#world-map", demographicData);
+        $.get("/getMdsRandCorrData", createMds);
+        createBubbleScatterplot("#bubble-scatterplot", demographicData);
+        createParallelCoordsPlot("#time-series-line-chart", demographicData);
+      })
+    }
+
+
+    function setVisible(selector, visible) {
+      document.querySelector(selector).style.display = visible ? 'block' : 'none';
+    }
+
+    //create mds plot
+    function createMds(data) {
+      setVisible('#mds-corr-plot', true);
+      setVisible('#mds-plot-loader', false);
+      let headers = data['data'][0].headers;
+      let MdsRandCorrData = data['data'][0].data;
+      let randomInputData = data['data'][0].randomInputData;
+
+
+      let plotData = [];
+
+      randomInputData.forEach((inputData, i) => {
+        plotData.push({
+          "x": MdsRandCorrData[i][0],
+          "y": MdsRandCorrData[i][1],
+          "country": inputData[0],
+          "year": inputData[1],
+          "GDP": inputData[2],
+          "Annual_CO2_emissions": inputData[5],
+          "Tourism": inputData[7],
+          "Literacy_Rates": inputData[15],
+        })
+      })
+      createMdsPlot("#mds-corr-plot", plotData)
+    }
+
+    //clean data to use in visualizations
+   function cleanData(demographicData) {
+     let consizeDemographicData = []
+
+     demographicData.forEach(dataPoint => {
+       if (!consizeDemographicData.some(el => el.country_name === dataPoint.country_name)) {
+           console.log(dataPoint);
+         consizeDemographicData.push({
+           "country_name": dataPoint.country_name,
+           "yearwiseData": [{
+             "year": dataPoint.Year,
+             "data": {
+               "GDP":dataPoint.GDP,
+               "Life_Expectancy": dataPoint.Life_Expectancy,
+               "Annual_CO2_emissions": dataPoint.Annual_CO2_emissions,
+               "Population": dataPoint.Population,
+               "Mortality_Rate":dataPoint.Mortality_Rate,
+               "Tourism":dataPoint.Tourism,
+               "Terrorism":dataPoint.Terrorism,
+               "Homicide_Rate":dataPoint.Homicide_Rate,
+               "Depression_percent":dataPoint.Depression_percent
+             }
+           }]
+         })
+
+       } else {
+
+         consizeDemographicData.find(el => el.country_name === dataPoint.country_name)["yearwiseData"].push({
+           "year": dataPoint.Year,
+           "data": {
+             "GDP":dataPoint.GDP,
+             "Life_Expectancy": dataPoint.Life_Expectancy,
+             "Annual_CO2_emissions": dataPoint.Annual_CO2_emissions,
+             "Population": dataPoint.Population,
+             "Mortality_Rate":dataPoint.Mortality_Rate,
+             "Tourism":dataPoint.Tourism,
+             "Terrorism":dataPoint.Terrorism,
+             "Homicide_Rate":dataPoint.Homicide_Rate,
+             "Depression_percent":dataPoint.Depression_percent
+           }
+         })
+       }
+     })
+     return consizeDemographicData
+   }
+   
+   
+  </script>
+
+
+
+</head>
+
+<body>
+
+
+  <nav id="dashboard-header">
+    <div class = "colHead2">
+      <div style="left-padding:10px ">
+     <!--<center>-->
+        <span>Select Factor</span>
+        <select id="options_factor" name="options_factor">
+         <option value="">Attributes</option>
+         <option value="Life_Expectancy">Life Expectancy</option>
+         <option value="Population">Population</option>
+         <option value="Annual_CO2_emissions">Annual_CO2_emissions</option>
+         <option value="Mortality_Rate">Mortality_Rate</option>
+         <option value="Tourism">Tourism</option>
+         <option value="Terrorism">Terrorism</option>
+         <option value="Nuclear_percent">Nuclear_percent</option>
+         <option value="Renewables_percent">Renewables_percent</option>
+         <option value="Homicide_Rate">Homicide_Rate</option>
+         <option value="Urban_population">Urban_population</option>
+         <option value="Homicide_Rate">Rural_population</option>
+         <option value="Urban_population">Depression_percent</option>
+       </select>
+
+     <!--</center>-->
+   </div>
+   </div>
+  
+  
+   
+      <nav id="dashboard-header">
+    <h3 class="dashboard-header-head">Global Statistics Dashboard</h3>
+    <button id="reset-button">Reset data</button>
+  </nav>
+     
+    
+  </nav>
+
+  <section id="body" class="dashboard">
+
+    <div class="flex0">
+
+      <div id='world-map-container'>
+        <h2 class="vis-header-no-marg" id="vis-header">World Map</h2>
+        <div id='world-map'></div>
+      </div>
+
+      <div class="line-seperator"></div>
+
+      <div id='parallel-coordinates-plot-container'>
+        <div id='parallel-coordinates-plot'> </div>
+      </div>
+
+    </div>
+
+    <div class="flex1">
+    
+     <div class="flex2">
+     
+       <div class="marginTop" id='bubble-scatterplot-container'>
+         <h2 id="vis-header"></h2>
+         <div id='bubble-scatterplot'> </div>
+       </div>
+
+
+
+       <div class="marginTop" id='donut-charts-container'>
+        <h2 id="vis-header">donut-charts</h2>
+        <button id="back" type="button" style="float:right;" onclick="document.location.reload(true)" hidden="hidden">Back</button>
+          <div id='donut-charts'></div>
+          <div id='race' style="display:none;"></div>
+        </div>
+      </div>
+   
+
+      <div class="marginTop" id='time-series-line-chart-container'>
+        <div id='time-series-line-chart'></div>
+      </div>
+
+     
+
+    </div>
+
+  </section>
+  
+  
+
+  <script src="/static/js/app.js"></script>
+
+</body>
+
+
+</html>

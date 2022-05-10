@@ -1,0 +1,114 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    /* height: 100vh; */
+    overflow: scroll;
+}
+svg{
+    overflow: visible;
+}
+section{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 80%;
+    padding: 10px
+}
+#world-map-container ,#parallel-coordinates-plot-container{
+    width: 50%;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    
+}
+#bubble-scatterplot-container, #time-series-line-chart-container, #mds-corr-plot-container{
+    width: calc(100%/3);
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items:center;
+
+}
+
+#bubble-scatterplot, #time-series-line-chart, #mds-corr-plot, #world-map ,#parallel-coordinates-plot{
+    height: 80%;
+}
+#bubble-scatterplot, #time-series-line-chart, #mds-corr-plot{
+    width: 80%;
+}
+
+
+body{
+    background: rgb(4, 4, 32);
+}
+text{
+    color: white;
+}
+.d3-tip{
+    z-index: 1000;
+}
+
+#vis-header, #dashboard-header{
+    color: rgb(119, 147, 207);
+    text-align: center;
+}
+
+#vis-header{
+    font-size: 16px;
+}
+#dashboard-header{
+    position: relative;
+    font: 50px bold;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 100px;
+}
+#reset-button{
+    position: absolute;
+    right: 10px;
+    background-color: #4c8baf; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+#mds-plot-loader{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: whitesmoke;
+}
+
+.dashboard-header-head {
+    background-image: linear-gradient(to bottom right, #792FFF, #A932FB);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -moz-text-fill-color: transparent;
+    -moz-background-clip: text;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    display: inline-block;
+    margin: 0;
+}
+
+#reset-button {
+    background-image: linear-gradient(to bottom right, #792FFF, #A932FB);
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 500ms ease;
+}
+#reset-button:hover {
+    box-shadow: 0px 0px 15px rgb(211, 37, 255);
+    transform: translateY(-10%);
+    transition: 500ms ease;
+}
