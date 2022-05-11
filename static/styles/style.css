@@ -33,6 +33,10 @@ section{
     justify-content: center;
     align-items:center;
 }
+#bubble-scatterplot-container{
+    margin: 0px 10px; 
+
+}
 
 #bubble-scatterplot, #time-series-line-chart, #donut-charts,#race, #world-map ,#parallel-coordinates-plot{
     width:100%;
@@ -110,7 +114,7 @@ text{
     /* margin-top: 20px; */
     background-color: #2A2937;
     background-color: transparent;
-    margin: 0px 10px;
+    /* margin: 0px 10px; */
     border-radius: 10px;
     padding: 10px 0px;
     background-color: rgba(0, 0, 0, 0.7);

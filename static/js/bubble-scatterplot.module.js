@@ -104,7 +104,7 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
         .range([3, 30]);
 
 
-
+    let formatValue = d3.format(".2s");
     let focus = svg.append("g")
         .attr("height", height)
         .attr("width", width)
@@ -113,7 +113,8 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
     focus.append("g")
         .attr("transform", "translate(0," + height + ")")
         .attr("class", "bubble-axis")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).tickFormat(function(d){return formatValue(d) }))
+       // .tickFormat(function(d) { return formatValue(d)});d3.format(".2s")
 
 
     focus.append("g")

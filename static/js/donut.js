@@ -83,12 +83,13 @@
         }
 
         var setCenterText = function(thisDonut) {
+        console.log("in center text");
             var sum = d3.sum(thisDonut.selectAll('.clicked').data(), function(d) {
                 return d.data.val;
             });
             var selectedAttr =thisDonut.selectAll('.clicked')._groups[0][0].__data__.data.cat;
             thisDonut.selectAll('.value')
-                .text(selectedAttr);
+                .text('selectedAttr');
             thisDonut.select('.percentage')
                 .text(function(d) {
                     return (sum)? (sum/d.total*100).toFixed(2) + '%'
@@ -113,7 +114,7 @@
         var resetAllCenterText = function() {
             charts.selectAll('.value')
                 .text(function(d) {
-                    return d.total.toFixed(1) + d.unit;
+                    return d.data.cat;
                 });
             charts.selectAll('.percentage')
                 .text('');
@@ -220,9 +221,16 @@
         }
 
         this.create = function(dataset) {
-            var $charts = $('#donut-charts');
-            chart_m = $charts.innerWidth() / dataset.length / 2 * 0.14;
-            chart_r = $charts.innerWidth() / dataset.length / 2 * 0.85;
+        let $charts = d3.select('#bubble-scatterplot')
+
+         chart_m = $charts.node().getBoundingClientRect().width/2;
+         chart_r = $charts.node().getBoundingClientRect().height/2;
+        console.log(chart_m)
+                console.log(chart_r)
+        
+          //  var $charts = $('#bubble-scatterplot');
+            //chart_m = $charts.innerWidth() / dataset.length / 2 * 0.14;
+           // chart_r = $charts.innerWidth() / dataset.length / 2 * 0.85;
 
             // charts.append('svg')
             //     .attr('class', 'legend')
@@ -239,7 +247,7 @@
                             .attr('class', function(d, i) {
                                 return 'donut type' + i;
                             })
-                            .attr('transform', 'translate(140.42999999999998,125.42999999999998)');
+                            .attr('transform', 'translate(170.42999999999998,135.42999999999998)');
 
           //  createLegend(getCatNames(dataset));
             createCenter();
