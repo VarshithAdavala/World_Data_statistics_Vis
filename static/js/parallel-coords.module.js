@@ -71,7 +71,7 @@ console.log(demographicData);
     svg = svg.append("g")
         .attr("width", width)
         .attr("height", height)
-        .attr("transform", "translate(" + margin + "," + margin + ")");
+        .attr("transform", "translate(" + (margin-70) + "," + (margin+10) + ")");
 
 
     svg.call(tip);
@@ -97,7 +97,7 @@ console.log(demographicData);
 
     // Build the X scale -> it find the best position for each Y axis
     x = d3.scalePoint()
-        .range([0, width])
+        .range([0, width+180])
         .padding(1)
         .domain(dimensions);
 

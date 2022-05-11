@@ -18,11 +18,11 @@
      function DonutCharts(data) {
         
 
-        var charts = d3.select('#bubble-scatterplot');
+        var charts = d3.select('#donut-charts');
 
         var chart_m,
             chart_r,
-            color = d3.scaleOrdinal(d3.schemeBlues[6]);
+            color = d3.scaleOrdinal(d3.schemeCategory20);
 
         var getCatNames = function(dataset) {
             var catNames = new Array();
@@ -34,6 +34,29 @@
             return catNames;
         }
 
+        var createLegend = function(catNames) {
+            var legends = charts.select('.legend')
+                            .selectAll('g')
+                                .data(catNames)
+                            .enter().append('g')
+                                .attr('transform', function(d, i) {
+                                    return 'translate(' + (i * 150 + 50) + ', 10)';
+                                });
+    
+            legends.append('circle')
+                .attr('class', 'legend-icon')
+                .attr('r', 6)
+                .style('fill', function(d, i) {
+                    return color(i);
+                });
+    
+            legends.append('text')
+                .attr('dx', '1em')
+                .attr('dy', '.3em')
+                .text(function(d) {
+                    return d;
+                });
+        }
 
         var createCenter = function(pie) {
 
@@ -86,7 +109,7 @@
             var sum = d3.sum(thisDonut.selectAll('.clicked').data(), function(d) {
                 return d.data.val;
             });
-            var selectedAttr =thisDonut.selectAll('.clicked')._groups[0][0].__data__.data.cat;
+var selectedAttr =thisDonut.selectAll('.clicked')._groups[0][0].__data__.data.cat;
             thisDonut.selectAll('.value')
                 .text(selectedAttr);
             thisDonut.select('.percentage')
@@ -94,20 +117,13 @@
                     return (sum)? (sum/d.total*100).toFixed(2) + '%'
                                 : '';
                 });
-                  
-        }
-        
-        var diapatchEvent = function(thisDonut) {
-            var selectedAttr =thisDonut.selectAll('.clicked')._groups[0][0].__data__.data.cat;
-                if (1 === thisDonut.selectAll('.clicked')._groups[0].length){
+
                 let event = new CustomEvent("change", {
                     detail: {
                       "data": selectedAttr,
                     }
                   });
                   document.dispatchEvent(event);
-                }
-                  
         }
 
         var resetAllCenterText = function() {
@@ -211,7 +227,6 @@
                     thisPath.classed('clicked', !clicked);
 
                     setCenterText(thisDonut);
-                    diapatchEvent(thisDonut);
                 });
 
             paths.exit().remove();
@@ -224,11 +239,11 @@
             chart_m = $charts.innerWidth() / dataset.length / 2 * 0.14;
             chart_r = $charts.innerWidth() / dataset.length / 2 * 0.85;
 
-            // charts.append('svg')
-            //     .attr('class', 'legend')
-            //     .attr('width', '100%')
-            //     .attr('height', 50)
-            //     .attr('transform', 'translate(0, -100)');
+            charts.append('svg')
+                .attr('class', 'legend')
+                .attr('width', '100%')
+                .attr('height', 50)
+                .attr('transform', 'translate(0, -100)');
 
             var donut = charts.selectAll('.donut')
                             .data(dataset)
@@ -239,9 +254,9 @@
                             .attr('class', function(d, i) {
                                 return 'donut type' + i;
                             })
-                            .attr('transform', 'translate(140.42999999999998,125.42999999999998)');
+                            .attr('transform', 'translate(140.42999999999998,65.42999999999998)');
 
-          //  createLegend(getCatNames(dataset));
+            createLegend(getCatNames(dataset));
             createCenter();
 
             updateDonut();
@@ -263,7 +278,7 @@
     function genData() {
         var type = ['Attributes'];
       //  var unit = ['M', 'GB', ''];
-        var cat = ['Population', 'Annual_CO2_emissions', 'Life_Expectancy', 'GDP' , 'Mortality_Rate' , 'Tourism' , 'Terrorism' , 'Homicide_Rate' , 'Depression_percent'];
+        var cat = ['Population', 'Annual_CO2_emissions', 'Life_Expectancy', 'GDP'];
 
         var dataset = new Array();
 
@@ -272,7 +287,7 @@
             var total = 0;
 
             for (var j = 0; j < cat.length; j++) {
-                var value = 11.1;
+                var value = Math.random()*10*(3-i);
                 total += value;
                 data.push({
                     "cat": cat[j],
