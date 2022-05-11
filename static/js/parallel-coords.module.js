@@ -2,17 +2,15 @@ var svg;
 var plotLine;
 var height, width, x, scales;
 var dimensions = [
-    "average_Annual_CO2_emissions",
-    "average_growth_rate",
-    "average_midyear_population",
-    "average_life_expectancy",
-     "average_midyear_population",
-     "average_Annual_CO2_emissions",
-     "average_Mortality_Rate",
-     "average_Tourism",
-     "average_Terrorism",
-     "average_Homicide_Rate",
-     "average_Depression_percent"
+    "Annual_CO2_emissions",
+    "Growth_rate",
+    "Midyear_population",
+    "Life_expectancy",
+    "Mortality_Rate",
+    "Tourism",
+    "Terrorism",
+    "Homicide_Rate",
+    "Depression_percent"
 ]
 
 let selectedBrushExtents = {};
@@ -49,15 +47,15 @@ console.log(demographicData);
 
         .html(function (d) {
             return ("<h3 style=\"margin:0\">" + d.country_name + "</h3>" +
-                "<p style=\"margin:0\">Average CO2 Emissions : " + d.average_Annual_CO2_emissions.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Average growth rate : " + d.average_growth_rate.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Average midyear population : " + d.average_midyear_population.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Average life expectancy : " + d.average_life_expectancy.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Average Mortality_Rate : " + d.average_Mortality_Rate.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Average Tourism : " + d.average_Tourism.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Average Terrorism : " + d.average_Terrorism.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Average Homicide_Rate : " + d.average_Homicide_Rate.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Average Depression_percent : " + d.average_Depression_percent.toFixed(2) + "</p>"
+                "<p style=\"margin:0\">CO2 Emissions : " + d.Annual_CO2_emissions.toFixed(2) + "</p>" +
+                "<p style=\"margin:0\">Growth rate : " + d.Growth_rate.toFixed(2) + "</p>" +
+                "<p style=\"margin:0\">Midyear population : " + d.Midyear_population.toFixed(2) + "</p>" +
+                "<p style=\"margin:0\">Life expectancy : " + d.Life_expectancy.toFixed(2) + "</p>" +
+                "<p style=\"margin:0\">Mortality_Rate : " + d.Mortality_Rate.toFixed(2) + "</p>" +
+                "<p style=\"margin:0\">Tourism : " + d.Tourism.toFixed(2) + "</p>" +
+                "<p style=\"margin:0\">Terrorism : " + d.Terrorism.toFixed(2) + "</p>" +
+                "<p style=\"margin:0\">Homicide_Rate : " + d.Homicide_Rate.toFixed(2) + "</p>" +
+                "<p style=\"margin:0\">Depression_percent : " + d.Depression_percent.toFixed(2) + "</p>"
                 
                 
             )
@@ -234,15 +232,15 @@ function getParallelCoordData(demographicData) {
         let count = countryData.yearwiseData.length
         data.push({
             "country_name": countryData.country_name,
-            "average_growth_rate": (growth_rate / count),
-            "average_life_expectancy": (life_expectancy / count),
-            "average_midyear_population": (midyear_population / count),
-            "average_Annual_CO2_emissions": (Annual_CO2_emissions / count),
-            "average_Mortality_Rate": (Mortality_Rate / count),
-            "average_Tourism": (Tourism / count),
-            "average_Terrorism": (Terrorism / count),
-            "average_Homicide_Rate": (Homicide_Rate / count),
-            "average_Depression_percent": (Depression_percent / count),     
+            "Growth_rate": (growth_rate / count),
+            "Life_expectancy": (life_expectancy / count),
+            "Midyear_population": (midyear_population / count),
+            "Annual_CO2_emissions": (Annual_CO2_emissions / count),
+            "Mortality_Rate": (Mortality_Rate / count),
+            "Tourism": (Tourism / count),
+             "Terrorism": (Terrorism / count),
+             "Homicide_Rate": (Homicide_Rate / count),
+             "Depression_percent": (Depression_percent / count),     
             "isHidden": false,
         })
     })

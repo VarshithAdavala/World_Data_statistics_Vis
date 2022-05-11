@@ -143,7 +143,7 @@ console.log(x(0));
     .data(data.slice(0, n), d => d.name)
     .join(
       enter => enter.append("rect")
-        .attr("fill", '#F4F4ED')
+        .attr("fill", '#a4d9f5')
         .attr("height", y.bandwidth())
         .attr("x", x(0))
         .attr("y",( d => y((prev.get(d) || d).rank)))

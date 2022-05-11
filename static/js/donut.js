@@ -272,7 +272,7 @@
             var total = 0;
 
             for (var j = 0; j < cat.length; j++) {
-                var value = Math.random()*10*(3-i);
+                var value = 11.1;
                 total += value;
                 data.push({
                     "cat": cat[j],

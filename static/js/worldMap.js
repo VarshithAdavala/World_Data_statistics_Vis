@@ -51,10 +51,9 @@ export function createWorldMap(selector, demographicData , attr) {
       demographicData.forEach(countryData => {
         let lifeExpectancyTotal = 0;
         countryData.yearwiseData.forEach(yearlyData => {
-//console.log(yearlyData.data[attr]);
-          lifeExpectancyTotal = parseFloat(yearlyData.data[attr])
+          lifeExpectancyTotal = lifeExpectancyTotal + parseFloat(yearlyData.data[attr])
         })
-        let averageLifeExpectency = lifeExpectancyTotal
+        let averageLifeExpectency = lifeExpectancyTotal / countryData.yearwiseData.length
         averageLifeExpectencyData.push({
           "country_name": countryData.country_name,
           [attr]: averageLifeExpectency
@@ -70,11 +69,11 @@ export function createWorldMap(selector, demographicData , attr) {
 };
 
  const formatText = n => {
-  if (n >= 1e6 && n < 1e9) return +(n / 1e9).toFixed(1);
+  if (n >= 1e5 && n < 1e9) return +(n / 1e6).toFixed(1);
   else if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(1);
   else if (n >= 1e12) return +(n / 1e9).toFixed(1);
   else
-    return n;
+  return parseInt(n);
 };
 
 
@@ -105,25 +104,26 @@ export function createWorldMap(selector, demographicData , attr) {
       })
       
     console.log(mapColorDomain)
-    var thres = []
-    var leg = []
+    var thres = new Set();
+    var leg = new Set();
     var temp =[]
-    
-    for(let i=0;i<=mapColorDomain.length;i+=9)
+  var c=9;
+  if(mapColorDomain.length<9){
+    c=1;
+  }  
+    for(let i=0;i<mapColorDomain.length;i+=c)
     {
-     thres.push(mapColorDomain[i]);
-     leg.push(formatText(mapColorDomain[i]));
-     temp.push(formatCash(mapColorDomain[i]));
+     thres.add(mapColorDomain[i]);
+     leg.add(formatText(mapColorDomain[i]));
+  //   temp.push(formatCash(mapColorDomain[i]));
     }
     
-   console.log(leg);
-    
-        console.log(temp);
+  
 
-      //var colors_new=["#ffffff","#ffe6f9","#ffccf2","#ffb3ec","#ff99e5","#ff80df","#ff66d9","#ff4dd2","#ff33cc","#ff1ac6","#ff00bf","#e600ac","#cc0099","#b30086","#990073"];
+     //var colors_new=["#ffffff","#ffe6f9","#ffccf2","#ffb3ec","#ff99e5","#ff80df","#ff66d9","#ff4dd2","#ff33cc","#ff1ac6","#ff00bf","#e600ac","#cc0099","#b30086","#990073"];
      // var myColor = d3.scaleOrdinal().domain(mapColorDomain).range(colors_new);
-      var myColor = d3.scaleThreshold().domain(thres).range(d3.schemeBlues[9]);
-      var LegmyColor = d3.scaleThreshold().domain(leg).range(d3.schemeBlues[9]);
+      var myColor = d3.scaleThreshold().domain(Array.from(thres)).range(d3.schemeBlues[thres.size]);
+      var LegmyColor = d3.scaleQuantile().domain(Array.from(leg)).range(d3.schemeBlues[leg.size]);
 
       svg.call(tip);
       
@@ -193,8 +193,18 @@ export function createWorldMap(selector, demographicData , attr) {
            .call(colorLegend)
 
          let dx = (svg.attr("width") - legend.attr("width")) / 4
-         legend
-           .attr("transform", "translate(" + (-130+dx) + "," + height + ")")
+         if(leg.size<=5)
+         {
+           legend
+           .attr("transform", "translate(" + (dx) + "," + (height) + ")")
+         
+         }
+         else
+         {
+          legend
+            .attr("transform", "translate(" + (-130+dx) + "," + (height) + ")")
+           }
+         
 
          legend.selectAll("g.cell text")
            .style("fill", "black")
@@ -266,7 +276,7 @@ export function updateWorldMap(selector, filtereddemographicData,attr) {
 
   selectedCountries = filtereddemographicData.map(el => el.country_name);
    
-
+console.log(filtereddemographicData);
 
   let averageLifeExpectencyData = []
   filtereddemographicData.forEach(countryData => {
@@ -292,13 +302,28 @@ export function updateWorldMap(selector, filtereddemographicData,attr) {
 };
 
  const formatText = n => {
-  if (n >= 1e6 && n < 1e9) return +(n / 1e9).toFixed(1);
+  if (n >= 1e5 && n < 1e9) return +(n / 1e6).toFixed(1);
   else if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(1);
   else if (n >= 1e12) return +(n / 1e9).toFixed(1);
   else
-    return n;
+    return parseInt(n.toFixed(1));
 };
+  d3.select('.d3-tip').remove();
+let tip = d3.tip()
+.attr('class', 'd3-tip d3-tip-world')
+.attr("pointer-events", "none")
 
+.style("background-color", "rgba(255, 255, 255, 0.85)")
+.style("border", "1px solid #574384")
+.style("border-radius", "5px")
+.style("padding", "5px")
+.style("font-size", "8px")
+.style("text-align", "center")
+.html(function (d) {
+console.log(formatCash(averageLifeExpectencyData.find(el => el.country_name === d.properties.name)[attr]));
+  return "<h3 style=\"margin:0\">" + d.properties.name + "</h3>" +
+    "<p style=\"margin:0\"> " +attr + " : " + formatCash(averageLifeExpectencyData.find(el => el.country_name === d.properties.name)[attr])+ "</p>";
+})
   let mapColorDomain = averageLifeExpectencyData.map(el => el[attr]);
       mapColorDomain = mapColorDomain.sort((a, b) => a - b);
       // getting unique values
@@ -308,21 +333,28 @@ export function updateWorldMap(selector, filtereddemographicData,attr) {
       
       let svgContainer = d3.select(selector)
      let svg = svgContainer.select("svg");
+     svg.call(tip);
+     var thres = new Set();
+     var leg = new Set();
+     var temp =[]
+     var c=9;
+     if(mapColorDomain.length<9){
+      c=1;
+    }  
+      for(let i=0;i<mapColorDomain.length;i+=c)
+      {
+      thres.add(mapColorDomain[i]);
+      leg.add(formatText(mapColorDomain[i]));
+   //   temp.push(formatCash(mapColorDomain[i]));
+     }
 
-   var thres = []
-   var leg = []
-   var temp =[]
-   
-   for(let i=0;i<=mapColorDomain.length;i+=9)
-   {
-    thres.push(mapColorDomain[i]);
-    leg.push(formatText(mapColorDomain[i]));
-    temp.push(formatCash(mapColorDomain[i]));
-   }
+
+     var legendsize=leg.size>=3 ? leg.size:3;;
+     
         console.log(thres);
-    var myColor = d3.scaleThreshold().domain(thres).range(d3.schemeBlues[9]);
-     var LegmyColor = d3.scaleThreshold().domain(leg).range(d3.schemeBlues[9]);
-
+        var myColor = d3.scaleThreshold().domain(Array.from(thres)).range(d3.schemeBlues[legendsize]);
+        var LegmyColor = d3.scaleQuantile().domain(Array.from(leg)).range(d3.schemeBlues[legendsize]);
+  
   let width = svgContainer.node().getBoundingClientRect().width;
   let height = svgContainer.node().getBoundingClientRect().height;
 
@@ -338,19 +370,29 @@ export function updateWorldMap(selector, filtereddemographicData,attr) {
     .cells(9)
     .labelOffset(-10)
     
+if(leg.size>=3){
  let legend = svg.append("g")
    .attr("class", "legend")
    .call(colorLegend)
 
  let dx = (svg.attr("width") - legend.attr("width")) / 4
+ if(leg.size<=5)
+{
+  legend
+  .attr("transform", "translate(" + (dx) + "," + (-10+height) + ")")
+
+}
+else
+{
  legend
    .attr("transform", "translate(" + (-130+dx) + "," + (-10+height) + ")")
+}
 
  legend.selectAll("g.cell text")
    .style("fill", "black")
    .style("font-size", "8px")
 
-
+}
   countries.style("fill-opacity", function (country) {
     if (averageLifeExpectencyData.length == 0) {
       return 1;
@@ -365,4 +407,23 @@ export function updateWorldMap(selector, filtereddemographicData,attr) {
       return 0.3;
     }
   });
+
+
+   countries
+  // .on('click', click())
+  .on("mousemove", function (clickedCountry) {
+
+    console.log("in")
+    console.log(clickedCountry)
+    d3.select(".d3-tip-world")
+    tip.show(clickedCountry);
+    tip.style("top", d3.event.pageY + 10 + "px")
+    tip.style("left", d3.event.pageX + 10 + "px")
+  })
+  .on("mouseout", function (clickedCountry) {
+    tip.hide()
+    // d3.select(".d3-tip-world")
+    //   .style("opacity", 0)
+  })
+  
   }

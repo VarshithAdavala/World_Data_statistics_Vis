@@ -50,7 +50,7 @@
   var _selectedCountries = [];
 
 
-let Attrelement = document.getElementById("options_factor");
+let Attrelement = "GDP"
 
     d3.csv("/static/data/Visualization_final.csv", function (err, demoData) {
  
@@ -84,10 +84,10 @@ let Attrelement = document.getElementById("options_factor");
        console.log(filteredDemographicData);
        
        console.log(filteredDemographicData);
-        var attr= document.getElementById("options_factor").value; 
-        var attrB=document.getElementById("options_factor").value; 
+        var attr= Attrelement 
+        var attrB=Attrelement
        console.log(document.getElementById("options_factor").value);
-       if(!attr)
+       if(Attrelement=="GDP")
        {
        console.log("no attr");
            attr="GDP";
@@ -105,9 +105,8 @@ let Attrelement = document.getElementById("options_factor");
       document.addEventListener("bubblePlotBrushed", function (event) {
         _selectedCountries = event.detail.selectedCountries;
         
-         var attr= document.getElementById("options_factor").value;     
-         console.log(document.getElementById("options_factor").value);
-         if(!attr)
+         var attr= Attrelement     
+         if(Attrelement=="GDP")
          {
          console.log("no attr");
              attr="GDP";
@@ -130,25 +129,15 @@ let Attrelement = document.getElementById("options_factor");
         }
       })
 
-    
- Attrelement.addEventListener("change", function (event) {
- 
- console.log("in attr listener");
 
-let optionSelected = Attrelement.value;
- console.log(optionSelected);
-       createLineChart("#parallel-coordinates-plot", demographicData ,optionSelected);
-      createWorldMap("#world-map", demographicData , optionSelected) ;
-     createBubbleScatterplot("#bubble-scatterplot", demographicData , optionSelected);
-
-   
-});
 document.addEventListener("change", function (event) {
  
  console.log("in donut event listener");
 
 let optionSelected =  event.detail.data;
- console.log(optionSelected);
+Attrelement=optionSelected;
+console.log("In donut event index")
+ console.log(Attrelement);
        createLineChart("#parallel-coordinates-plot", demographicData ,optionSelected);
       createWorldMap("#world-map", demographicData , optionSelected) ;
      createBubbleScatterplot("#bubble-scatterplot", demographicData , optionSelected);
@@ -194,10 +183,10 @@ document.addEventListener("timePlotBrushed", function (event) {
         })
 
         console.log(filteredDemographicData);
-        var attr= document.getElementById("options_factor").value; 
-        var attrB=document.getElementById("options_factor").value; 
-       console.log(document.getElementById("options_factor").value);
-       if(!attr)
+        var attr= Attrelement 
+        var attrB=Attrelement
+       
+       if(Attrelement=="GDP")
        {
        console.log("no attr");
            attr="GDP";
@@ -319,34 +308,13 @@ document.addEventListener("timePlotBrushed", function (event) {
 
   <nav id="dashboard-header">
     <div class = "colHead2">
-      <div style="left-padding:10px ">
-     <!--<center>-->
-        <span>Select Factor</span>
-        <select id="options_factor" name="options_factor">
-         <option value="">Attributes</option>
-         <option value="Life_Expectancy">Life Expectancy</option>
-         <option value="Population">Population</option>
-         <option value="Annual_CO2_emissions">Annual_CO2_emissions</option>
-         <option value="Mortality_Rate">Mortality_Rate</option>
-         <option value="Tourism">Tourism</option>
-         <option value="Terrorism">Terrorism</option>
-         <option value="Nuclear_percent">Nuclear_percent</option>
-         <option value="Renewables_percent">Renewables_percent</option>
-         <option value="Homicide_Rate">Homicide_Rate</option>
-         <option value="Urban_population">Urban_population</option>
-         <option value="Homicide_Rate">Rural_population</option>
-         <option value="Urban_population">Depression_percent</option>
-       </select>
-
-     <!--</center>-->
-   </div>
    </div>
   
   
    
       <nav id="dashboard-header">
     <h3 class="dashboard-header-head">Global Statistics Dashboard</h3>
-    <button id="reset-button">Reset data</button>
+    <button id="reset-button" onclick="document.location.reload(true)">Reset data</button>
   </nav>
      
     
