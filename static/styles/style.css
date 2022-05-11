@@ -319,6 +319,13 @@ margin-right: 2px;
 position: absolute;
 top: 0px;
 right: 300px;
+background-image:url("../img/icons8-memories-32.png");
+background-repeat: no-repeat;
+/* background: none; */
+border: none;
+width: 32px;
+height: 30px;
+
 }
 
 #back{
@@ -327,4 +334,9 @@ margin-right: 2px;
 position: absolute;
 top: 0px;
 left: 300px;
+background-image:url("../img/icons8-back-arrow-30.png");
+background-repeat: no-repeat;
+width: 32px;
+height: 34px;
+
 }

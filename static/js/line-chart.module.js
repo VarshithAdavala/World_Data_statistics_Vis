@@ -192,13 +192,13 @@ console.log(dataset);
     let focus = svg.append("g")
         .attr("class", "focus")
         .attr("transform", "translate(" + margin.left + "," + 0 + ")");
-
+        let formatValue = d3.format(".2s");
 
     /* === focus chart === */
 
     focus.append("g")
         .attr("class", "y axis")
-        .call(yAxis)
+        .call(yAxis.tickFormat(function(d){return formatValue(d) }))
         .attr("transform", "translate(" + (width) + ", 0)");
 
     focus
@@ -305,9 +305,9 @@ console.log(dataset);
     svg.append("text")
         .attr("class", "y axis title")
         .text(attr)
-        // .attr("transform", "rotate(90)")
-        .attr("x", width)
-        .attr("y", -20)
+        .attr("transform", "rotate(90)")
+        .attr("x",90)
+        .attr("y", -550)
         .attr("dy", "2em")
         .style("text-anchor", "middle")
         .style("fill", "white")
@@ -315,11 +315,11 @@ console.log(dataset);
         
           svg.append("text")
         .attr("text-anchor", "end")
-        .attr("x", 250)
-        .attr("y", -10)
-        .style("font-size", "15px")
+        .attr("x", 400)
+        .attr("y", -0)
+        .style("font-size", "16px")
         .style("fill", "white")
-        .text("Year Vs "+attr);
+        .text("Year vs "+attr);
 
 
 

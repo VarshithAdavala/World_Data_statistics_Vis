@@ -69,6 +69,7 @@
                     .attr('y', chart_r * -0.16)
                     .attr('text-anchor', 'middle')
                     .style('font-weight', 'bold')
+                 
                     .text(function(d, i) {
                         return d.type;
                     });

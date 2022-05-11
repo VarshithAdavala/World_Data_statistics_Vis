@@ -9,6 +9,7 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
 
     let svgContainer = d3.select(selector)
     if (svgContainer) svgContainer.selectAll("*").remove();
+    let formatValue = d3.format(".2s");
 
     let svg = svgContainer.append('svg');
     let optWidth = svgContainer.node().getBoundingClientRect().width;
@@ -27,9 +28,9 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
         .style("text-align", "center")
         .html(function (d) {
             return ("<h3 style=\"margin:0\">" + d.country_name + "</h3>" +
-                "<p style=\"margin:0\">Average growth rate : " + d.average_growth_rate + "</p>" +
-                "<p style=\"margin:0\">Average "+attr+ ":" + d.average_life_expectancy + "</p>" +
-                "<p style=\"margin:0\">Average midyear population : " + d.average_midyear_population + "</p>")
+                "<p style=\"margin:0\">Average growth rate : " + formatValue(d.average_growth_rate) + "</p>" +
+                "<p style=\"margin:0\">Average "+attr+ ":" + formatValue(d.average_life_expectancy) + "</p>" +
+                "<p style=\"margin:0\">Average midyear population : " + formatValue(d.average_midyear_population) + "</p>")
         })
 
     let margin = 30
@@ -104,7 +105,7 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
         .range([3, 30]);
 
 
-    let formatValue = d3.format(".2s");
+    
     let focus = svg.append("g")
         .attr("height", height)
         .attr("width", width)
@@ -119,7 +120,7 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
 
     focus.append("g")
         .attr("class", "bubble-axis")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y).tickFormat(function(d){return formatValue(d) }));
 
 
 
@@ -182,13 +183,14 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
     svg.append("text")
         .attr("class", "y axis title")
         .text(attr)
-        .attr("x", 0)
-        .attr("y", 10)
+        .attr("x", -60)
+        .attr("y", -35)
         .attr("dy", "2em")
-        // .attr("transform", "rotate(-90)")
-        // .style("text-anchor", "middle")
+        .attr("text-anchor", "end")
+        .attr("transform", "rotate(-90)")
         .style("fill", "white")
-        .style("font-size", "10px");
+        .style("font-size", "12px");
+     
 
     svg.append("text")
         .attr("class", "x axis title")
@@ -199,15 +201,17 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
         // .attr("transform", "rotate(-90)")
         .style("text-anchor", "middle")
         .style("fill", "white")
-        .style("font-size", "10px");
+        .style("font-size", "12px");
+        
         
         svg.append("text")
       .attr("text-anchor", "end")
       .attr("x", 250)
-      .attr("y", 0)
+      .attr("y", 10)
       .style("font-size", "15px")
       .style("fill", "white")
       .text("GDP Vs "+attr);
+     
 
 
     svg.selectAll('g.tick text')

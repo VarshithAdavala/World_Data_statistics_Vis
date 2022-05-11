@@ -10,21 +10,12 @@ FileAttachment("category-brands.csv").csv({typed: true})
 )}
 
 function _replay(html){return(
-html`<button class="replay">Replay`
+html`<button class="replay">`
 )}
 
 async function* _chart(replay,d3,width,height,bars,axis,labels,ticker,keyframes,duration,x,invalidation)
 {
    replay;
-  // let svgContainer = d3.select('#donut-charts');
- 
-
-
-  // let optWidth = svgContainer.node().getBoundingClientRect().width;
-  // let optHeight = svgContainer.node().getBoundingClientRect().height;
-
-  //  width = optWidth;
-  //  height = optHeight;
 
 
   const svg = d3.create("svg")
@@ -231,18 +222,18 @@ function _axis(margin,d3,x,width,tickFormat,barSize,n,y){return(
 function axis(svg) {
   const g = svg.append("g")
   .attr("transform","translate(-100,-100)");
-
-  const axis = d3.axisTop(x)
+  let formatValue = d3.format(".2s");
+  const axis = d3.axisTop(x).tickFormat(function(d){return formatValue(d) })
       .ticks(width / 160, tickFormat)
       .tickSizeOuter(0)
-      .tickSizeInner(-barSize * (n + y.padding()));
+      .tickSizeInner(-360-barSize * (n + y.padding()));
 
   return (_, transition) => {
     g.transition(transition).call(axis);
     g.select(".tick:first-of-type text").remove();
     g.selectAll(".tick:not(:first-of-type) line").attr("stroke", "white");
     g.select(".domain").remove();
-    g.selectAll("text").style("font-weight","bold").style("font-size","30px").attr("transform", "rotate(316)");
+    g.selectAll("text").style("font-weight","bold").style("font-size","35px");
   };
 }
 )}
@@ -253,11 +244,11 @@ function ticker(svg) {
       .style("font", `bold ${barSize}px var(--sans-serif)`)
       .style("font-variant-numeric", "tabular-nums")
       .attr("text-anchor", "end")
-      .attr("x", width - 6)
-      .attr("y", 50)
+      .attr("x", 800)
+      .attr("y", -250)
       .attr("dy", "0.32em")
       .text(keyframes[0][0])
-      .attr("fill", 'red') .style("font-size","50px");
+      .attr("fill", 'white') .style("font-size","70px");
 
   return ([date], transition) => {
     transition.end().then(() => now.text(date));

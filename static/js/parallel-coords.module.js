@@ -149,6 +149,7 @@ console.log(demographicData);
 
 
     // Draw the axis:
+    
     let axis = svg.selectAll(".myAxis")
         .data(dimensions).enter()
         .append("g")
