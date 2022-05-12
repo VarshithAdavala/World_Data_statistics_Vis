@@ -112,3 +112,4 @@ text{
     transform: translateY(-10%);
     transition: 500ms ease;
 }
+

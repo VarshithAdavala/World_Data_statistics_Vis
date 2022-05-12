@@ -148,6 +148,7 @@ console.log(demographicData);
         })
 
 
+
     // Draw the axis:
     
     let axis = svg.selectAll(".myAxis")
@@ -163,12 +164,12 @@ console.log(demographicData);
                 .call(d3.brushY().extent([[- 10, 0], [10, height]]).on("brush end", brush));
         })
 
-
+    let formatValue = d3.format(".2s");
 
     // translate this element to its right position on the x axis
     axis.attr("transform", function (d) { return "translate(" + x(d) + ")"; })
         // And I build the axis with the call function
-        .each(function (d) { d3.select(this).call(d3.axisLeft().scale(scales.find(el => el.dimension === d).scale)); })
+        .each(function (d) { d3.select(this).call(d3.axisLeft().scale(scales.find(el => el.dimension === d).scale).tickFormat(function(d){return formatValue(d) })); })
         // Add axis title
         .append("text")
         .style("text-anchor", "middle")
@@ -185,7 +186,13 @@ console.log(demographicData);
             words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
             return words.join(' ');
         })
-
+     svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("x", 400)
+        .attr("y", -27)
+        .style("font-size", "16px")
+        .style("fill", "white")
+        .text("PCP ");
 
     // .selectAll("rect")
     // .attr("x", -8)
