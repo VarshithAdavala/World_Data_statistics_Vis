@@ -91,11 +91,7 @@
             var selectedAttr =thisDonut.selectAll('.clicked')._groups[0][0].__data__.data.cat;
             thisDonut.selectAll('.value')
                 .text(selectedAttr);
-            thisDonut.select('.percentage')
-                .text(function(d) {
-                    return (sum)? (sum/d.total*100).toFixed(2) + '%'
-                                : '';
-                });
+           
                   
         }
         
@@ -117,8 +113,6 @@
                 .text(function(d) {
                     return d.data.cat;
                 });
-            charts.selectAll('.percentage')
-                .text('');
         }
 
         var pathAnim = function(path, dir) {
@@ -184,9 +178,6 @@
                     var thisDonut = d3.selectAll('.type0');
                     thisDonut.select('.value').text(function(donut_d) {
                         return d.data.cat;
-                    });
-                    thisDonut.select('.percentage').text(function(donut_d) {
-                        return (d.data.val/donut_d.total*100).toFixed(2) + '%';
                     });
                 })
                 .on("mouseout", function(d, i, j) {

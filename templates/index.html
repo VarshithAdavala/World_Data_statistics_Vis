@@ -152,10 +152,8 @@ console.log("In donut event index")
        const runtime = new Runtime();
       const main = runtime.module(define, Inspector.into('#race'));
       
-      let element = document.getElementById("back");
-    let hidden = element.getAttribute("hidden");
-    console.log("button:")
-    console.log(element)
+       var ele=document.getElementById("vis-header")
+       ele.textContent=Attrelement;
 
     if (document.getElementById("back").style.display=='none') {
            setVisible("#back",true)
@@ -310,8 +308,8 @@ function back_button()
 {
 setVisible("#race",false);
 setVisible("#bubble-scatterplot",true);
- let element = document.getElementById("back");
-let hidden = element.getAttribute("hidden");
+      var ele=document.getElementById("vis-header")
+      ele.textContent="Donut-Chart";
 
 
 if (document.getElementById("back").style.display=='none') {
@@ -337,11 +335,7 @@ function setVisible(selector, visible) {
     <h3 class="loaderHeading">Global Statistics Dashboard</h3>
   </div>
 
-  <div class="background">
-    <div class="vector-circle vector-circle0"></div>
-    <div class="vector-circle vector-circle1"></div>
-    <div class="vector-circle vector-circle2"></div>
-  </div>
+  
   
   
    
@@ -375,7 +369,7 @@ function setVisible(selector, visible) {
      <div class="flex2">
      
        <div class="marginTop" id='bubble-scatterplot-container'>
-        <h2 id="vis-header" style="padding-top: 20px;">donut-charts</h2>
+        <h2 id="vis-header" style="padding-top: 20px;">donut-chart</h2>
          <div id='bubble-scatterplot'> </div>
          <button id="back" type="button"  onclick="back_button()" style="float:right; display:none;" ></button>
         <div id='race' style="display:none;">
