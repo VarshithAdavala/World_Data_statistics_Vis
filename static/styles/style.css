@@ -298,7 +298,8 @@ text{
     justify-content: center;
     align-items: center;
     animation: loaderAnim 1s ease forwards;
-    animation-delay: 3s;
+    animation-delay: 1s;
+    
 }
 
 @keyframes loaderAnim {

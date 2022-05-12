@@ -89,6 +89,11 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
         ]
     }
 
+    let yDiff = dataYrange[1] - dataYrange[0]
+    dataYrange = [
+        dataYrange[0] - yDiff / 10,
+        dataYrange[1] + yDiff / 10,
+    ]
 
     // Add X axis
     x = d3.scaleLinear()

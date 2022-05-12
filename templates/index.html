@@ -210,6 +210,11 @@ document.addEventListener("timePlotBrushed", function (event) {
     function resetData() {
     
     console.log("in reset");
+    // document.getElementById("loader").style.display = "none";
+
+
+    // window.location.reload();
+    
       _selectedCountries = []
 
       _selectedCountries = [];
@@ -339,7 +344,9 @@ function setVisible(selector, visible) {
    
 
   <div class="loader">
+
     <h3 class="loaderHeading">Global Statistics Dashboard</h3>
+
   </div>
 
   <div class="background">
