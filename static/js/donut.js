@@ -17,7 +17,7 @@
 
      function DonutCharts(data) {
         
-
+console.log("In donut "+data)
         var charts = d3.select('#bubble-scatterplot');
 
         var chart_m,
@@ -44,6 +44,7 @@
             // The circle displaying total data.
             donuts.append("svg:circle")
                 .attr( "r", chart_r * 0.6)
+                .attr("id", "donut_center")
                 .style("fill", "#E7E7E7")
 
                 .on( "mouseover",function(d, i) {
@@ -81,7 +82,8 @@
                     .attr('y', chart_r * 0.16)
                     .attr('text-anchor', 'middle')
                     .attr('font-size','12px')
-                    .style('font-weight', 'bold');
+                    .style('font-weight', 'bold')
+                    .text("GDP");
                   
         }
 
@@ -90,9 +92,17 @@
             var sum = d3.sum(thisDonut.selectAll('.clicked').data(), function(d) {
                 return d.data.val;
             });
-            var selectedAttr =thisDonut.selectAll('.clicked')._groups[0][0].__data__.data.cat;
+            if(thisDonut.selectAll('.clicked')._groups[0][0]!=null)
+            {
+                let selectedAttr =thisDonut.selectAll('.clicked')._groups[0][0].__data__.data.cat;
             thisDonut.selectAll('.value')
                 .text(selectedAttr);
+                }
+                else
+                {
+                thisDonut.selectAll('.value')
+                    .text("GDP");
+                }
            
                   
         }
@@ -110,10 +120,10 @@
                   
         }
 
-        var resetAllCenterText = function() {
+         function resetAllCenterText() {
             charts.selectAll('.value')
                 .text(function(d) {
-                    return d.data.cat;
+                    return d.data.cat==null? "GDP" : d.data.cat ;
                 });
         }
 
@@ -189,6 +199,7 @@
                     }
                     var thisDonut = d3.selectAll('.type0');
                     setCenterText(thisDonut);
+                    //resetAllCenterText()
                 })
                 .on("click",function(d, i, j) {
                     var thisDonut = d3.selectAll('.type0');

@@ -102,7 +102,7 @@ if __name__ == "__main__":
     #     for i in range(hf_rank_data.shape[0]):
     #         if hf_rank_data['hf_rank'][i+1296] > 0:
     #             tsv_writer.writerow([hf_rank_data['ISO_code'][i+1296], hf_rank_data['countries'][i+1296], str(int(hf_rank_data['hf_rank'][i+1296]))])
-    app.run(port=5050)
+    app.run(port=5130)
     app.run(debug=True)
 
    

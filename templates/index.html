@@ -218,6 +218,10 @@ document.addEventListener("timePlotBrushed", function (event) {
       _selectedCountries = []
 
       _selectedCountries = [];
+      if(document.getElementById("back").style.display=='block')
+          document.getElementById("back").click();
+      
+      
       d3.csv("/static/data/Visualization_final.csv", function (err, demoData) {
       
         let demographicData = cleanData(demoData);
@@ -359,7 +363,7 @@ function setVisible(selector, visible) {
    
       <nav id="dashboard-header">
     <h3 class="dashboard-header-head">Global Statistics Dashboard</h3>
-    <button id="reset-button">Reset data</button>
+    <button id="reset-button" >Reset data</button>
   </nav>
      
     
