@@ -106,7 +106,7 @@ text{
 .dashboard-header-head {
     margin: 0;
     font-weight: 200;
-    padding-right:400px;
+    padding-left:500px;
     color: black;
 }
 
@@ -226,7 +226,7 @@ text{
     width: 100vw;
     height: 100vh;
     margin: 0;
-    background-color: transparent;
+    background-color: #2c2c2c;
     position: fixed;
     left: 0;
     top: 0;
@@ -247,7 +247,7 @@ text{
     filter: blur(20px);
     border-radius: 50%;
     /* background-color: rgb(43, 69, 155); */
-    background-image: linear-gradient(to bottom right, #8BA6FD, #B968A9);
+    background-image: linear-gradient(to bottom right,  #8BA6FD, #75d7f0);
 }
 
 .vector-circle1 {
@@ -259,7 +259,7 @@ text{
     filter: blur(10px);
     border-radius: 50%;
     /* background-color: rgb(43, 69, 155); */
-    background-image: linear-gradient(to bottom right, #8BA6FD, #B968A9);
+    background-image: linear-gradient(to bottom right,  #8BA6FD, #75d7f0);
 }
 
 .vector-circle2 {
@@ -271,7 +271,7 @@ text{
     filter: blur(10px);
     border-radius: 50%;
     /* background-color: rgb(43, 69, 155); */
-    background-image: linear-gradient(to bottom right, #8BA6FD, #B968A9);
+    background-image: linear-gradient(to bottom right,  #8BA6FD, #75d7f0);
 }
 
 .loader {
@@ -282,6 +282,8 @@ text{
     height: 100vh;
     z-index: 999;
     background-color: #1b1b1b;
+    background: url(../img/world_stat.jpeg) no-repeat center fixed;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -303,7 +305,8 @@ text{
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
     font-size: 5vh;
-    background-image: linear-gradient(to bottom right, #8BA6FD, #B968A9);
+    font-weight:bold;
+    background-image: linear-gradient(to bottom right,  #8BA6FD, #FFD700);
     color: transparent;
     background-clip: text;
     -webkit-background-clip: text;

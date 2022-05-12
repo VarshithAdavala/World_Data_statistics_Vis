@@ -17,7 +17,6 @@ async function* _chart(replay,d3,width,height,bars,axis,labels,ticker,keyframes,
 {
    replay;
 
-
   const svg = d3.create("svg")
   //    .attr("viewBox", [0, 0, width, height])
     .attr("height",460)

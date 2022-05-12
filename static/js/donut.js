@@ -89,8 +89,8 @@
                 return d.data.val;
             });
             var selectedAttr =thisDonut.selectAll('.clicked')._groups[0][0].__data__.data.cat;
-            thisDonut.selectAll('.value')
-                .text('selectedAttr');
+            //thisDonut.selectAll('.value')
+                //.text(selectedAttr);
             thisDonut.select('.percentage')
                 .text(function(d) {
                     return (sum)? (sum/d.total*100).toFixed(2) + '%'

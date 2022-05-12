@@ -143,6 +143,8 @@ console.log("In donut event index")
      
   
     setVisible("#bubble-scatterplot",false)
+    let svgContainer = d3.select("#race")
+    if (svgContainer) svgContainer.selectAll("*").remove();
     setVisible("#race",true)
         localStorage.setItem('data',optionSelected);
        const runtime = new Runtime();
@@ -153,13 +155,15 @@ console.log("In donut event index")
     console.log("button:")
     console.log(element)
 
-    if (hidden) {
-       element.removeAttribute("hidden");
+    if (document.getElementById("back").style.display=='none') {
+           setVisible("#back",true)
     }
       
 
    
 });
+
+
 document.addEventListener("timePlotBrushed", function (event) {
         let timeRange = [event.detail.timeRange[0].getFullYear(), event.detail.timeRange[1].getFullYear()];
         if (_selectedCountries.length === 0) {
@@ -296,18 +300,46 @@ document.addEventListener("timePlotBrushed", function (event) {
    }
    
    
+   
   </script>
 
+<script>
+function back_button()
+{
+setVisible("#race",false);
+setVisible("#bubble-scatterplot",true);
+ let element = document.getElementById("back");
+let hidden = element.getAttribute("hidden");
 
+
+if (document.getElementById("back").style.display=='none') {
+   setVisible("#back",true)
+}
+else
+{
+   setVisible("#back",false)
+}
+}
+
+function setVisible(selector, visible) {
+  document.querySelector(selector).style.display = visible ? 'block' : 'none';
+}
+</script>
 
 </head>
 
 <body>
 
 
-  <nav id="dashboard-header">
-    <div class = "colHead2">
-   </div>
+ <!-- <div class="loader">
+    <h3 class="loaderHeading">Global Statistics Dashboard</h3>
+  </div> -->
+
+  <div class="background">
+    <div class="vector-circle vector-circle0"></div>
+    <div class="vector-circle vector-circle1"></div>
+    <div class="vector-circle vector-circle2"></div>
+  </div>
   
   
    
@@ -341,10 +373,11 @@ document.addEventListener("timePlotBrushed", function (event) {
      <div class="flex2">
      
        <div class="marginTop" id='bubble-scatterplot-container'>
-     <button id="back" type="button" style="float:right;" onclick="document.location.reload(true)" hidden="hidden"></button>
         <h2 id="vis-header" style="padding-top: 20px;">donut-charts</h2>
          <div id='bubble-scatterplot'> </div>
-        <div id='race' style="display:none;"></div>
+         <button id="back" type="button"  onclick="back_button()" style="float:right; display:none;" ></button>
+        <div id='race' style="display:none;">
+        </div>
        </div>
 
 
