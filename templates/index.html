@@ -52,6 +52,8 @@
 
 let Attrelement = "GDP"
 
+    document.getElementById("reset-button").addEventListener("click", resetData);
+
     d3.csv("/static/data/Visualization_final.csv", function (err, demoData) {
  
     
@@ -206,18 +208,18 @@ document.addEventListener("timePlotBrushed", function (event) {
      
 
     function resetData() {
+    
+    console.log("in reset");
       _selectedCountries = []
 
       _selectedCountries = [];
-      d3.csv("/static/data/Clean-Data.csv", function (err, demoData) {
-
-        setVisible('#mds-corr-plot', false);
-        setVisible('#mds-plot-loader', true);
+      d3.csv("/static/data/Visualization_final.csv", function (err, demoData) {
+      
         let demographicData = cleanData(demoData);
-        createLineChart("#time-series-line-chart", demographicData);
-        createWorldMap("#world-map", demographicData);
-        $.get("/getMdsRandCorrData", createMds);
-        createBubbleScatterplot("#donut-charts", demographicData);
+            console.log(demographicData);
+        createLineChart("#parallel-coordinates-plot", demographicData, "GDP");
+        createWorldMap("#world-map", demographicData , "GDP");
+        createBubbleScatterplot("#donut-charts", demographicData,"Life_Expectancy");
         createParallelCoordsPlot("#time-series-line-chart", demographicData);
       })
     }
@@ -345,7 +347,7 @@ function setVisible(selector, visible) {
    
       <nav id="dashboard-header">
     <h3 class="dashboard-header-head">Global Statistics Dashboard</h3>
-    <button id="reset-button" onclick="document.location.reload(true)">Reset data</button>
+    <button id="reset-button">Reset data</button>
   </nav>
      
     
