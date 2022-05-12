@@ -57,6 +57,12 @@ text{
     color: black;
     text-align: center;
 }
+#donut-header1{
+    font-size: 16px;
+    font-weight: 300;
+    color: white;
+    text-align: center;
+}
 
 #vis-header{
     font-size: 16px;
@@ -106,8 +112,9 @@ text{
 .dashboard-header-head {
     margin: 0;
     font-weight: 200;
-    padding-left:500px;
-    color: black;
+    padding-left: 550px;
+    color: white;
+    font-size: x-large;
 }
 
 .marginTop {
@@ -226,11 +233,14 @@ text{
     width: 100vw;
     height: 100vh;
     margin: 0;
-    background: url(../img/white.jpeg) no-repeat center fixed;
+   
     position: fixed;
     left: 0;
     top: 0;
     z-index: -1;
+    /* background:#2a2a28; */
+    background: url(../img/test.png) no-repeat center fixed; 
+    background-size: cover;
 }
 
 .vector-circle {
@@ -321,7 +331,7 @@ margin-top: 1px;
 margin-right: 2px;
 position: absolute;
 top: 0px;
-right: 300px;
+right: 370px;
 background-image:url("../img/icons8-memories-32.png");
 background-repeat: no-repeat;
 /* background: none; */
@@ -336,7 +346,7 @@ margin-top: 1px;
 margin-right: 2px;
 position: absolute;
 top: 0px;
-left: 300px;
+left: 370px;
 background-image:url("../img/icons8-back-arrow-30.png");
 background-repeat: no-repeat;
 width: 32px;

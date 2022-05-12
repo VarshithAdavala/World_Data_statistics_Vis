@@ -120,6 +120,8 @@ function _next(nameframes,d3){return(
 new Map(nameframes.flatMap(([, data]) => d3.pairs(data)))
 )}
 
+var myColor = d3.scaleLinear().range(d3.schemeBlues[9]);
+
 function _bars(n,y,x,prev,next){return(
 function bars(svg) {
   let bar = svg.append("g")
@@ -133,7 +135,7 @@ console.log(x(0));
     .data(data.slice(0, n), d => d.name)
     .join(
       enter => enter.append("rect")
-        .attr("fill", '#a4d9f5')
+      
         .attr("height", y.bandwidth())
         .attr("x", x(0))
         .attr("y",( d => y((prev.get(d) || d).rank)))
@@ -145,7 +147,10 @@ console.log(x(0));
     )
     .call(bar => bar.transition(transition)
       .attr("y", d => y(d.rank))
-      .attr("width", d => x(d.value) - x(0)));
+      .attr("width", d => x(d.value) - x(0)))
+      .attr("fill", function(d,i) {
+        return myColor(Math.abs(9-i));
+    });
 }
 )}
 

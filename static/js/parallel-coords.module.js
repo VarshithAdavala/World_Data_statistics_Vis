@@ -23,6 +23,7 @@ console.log(demographicData);
     dimensions.forEach(d => {
         selectedBrushExtents[d] = [];
     })
+    let formatValue = d3.format(".2s");
 
     let svgContainer = d3.select(selector)
     if (svgContainer) svgContainer.selectAll("*").remove();
@@ -47,15 +48,15 @@ console.log(demographicData);
 
         .html(function (d) {
             return ("<h3 style=\"margin:0\">" + d.country_name + "</h3>" +
-                "<p style=\"margin:0\">CO2 Emissions : " + d.Annual_CO2_emissions.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Growth rate : " + d.Growth_rate.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Midyear population : " + d.Midyear_population.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Life expectancy : " + d.Life_expectancy.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Mortality_Rate : " + d.Mortality_Rate.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Tourism : " + d.Tourism.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Terrorism : " + d.Terrorism.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Homicide_Rate : " + d.Homicide_Rate.toFixed(2) + "</p>" +
-                "<p style=\"margin:0\">Depression_percent : " + d.Depression_percent.toFixed(2) + "</p>"
+                "<p style=\"margin:0\">CO2 Emissions : " + formatValue(d.Annual_CO2_emissions) + "</p>" +
+                "<p style=\"margin:0\">Growth rate : " + formatValue(d.Growth_rate) + "</p>" +
+                "<p style=\"margin:0\">Midyear population : " +formatValue( d.Midyear_population) + "</p>" +
+                "<p style=\"margin:0\">Life expectancy : " + formatValue(d.Life_expectancy) + "</p>" +
+                "<p style=\"margin:0\">Mortality_Rate : " +formatValue( d.Mortality_Rate) + "</p>" +
+                "<p style=\"margin:0\">Tourism : " +formatValue( d.Tourism) + "</p>" +
+                "<p style=\"margin:0\">Terrorism : " + formatValue(d.Terrorism) + "</p>" +
+                "<p style=\"margin:0\">Homicide_Rate : " + formatValue(d.Homicide_Rate) + "</p>" +
+                "<p style=\"margin:0\">Depression_percent : " + formatValue(d.Depression_percent) + "</p>"
                 
                 
             )
@@ -164,7 +165,6 @@ console.log(demographicData);
                 .call(d3.brushY().extent([[- 10, 0], [10, height]]).on("brush end", brush));
         })
 
-    let formatValue = d3.format(".2s");
 
     // translate this element to its right position on the x axis
     axis.attr("transform", function (d) { return "translate(" + x(d) + ")"; })

@@ -73,14 +73,16 @@
                     .text(function(d, i) {
                         return d.type;
                     });
+            // donuts.append('text')
+            //         .attr('class', 'center-txt value')
+            //         .attr('text-anchor', 'middle');
             donuts.append('text')
                     .attr('class', 'center-txt value')
-                    .attr('text-anchor', 'middle');
-            donuts.append('text')
-                    .attr('class', 'center-txt percentage')
                     .attr('y', chart_r * 0.16)
                     .attr('text-anchor', 'middle')
-                    .style('fill', '#A2A2A2');
+                    .attr('font-size','12px')
+                    .style('font-weight', 'bold');
+                  
         }
 
         var setCenterText = function(thisDonut) {
