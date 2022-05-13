@@ -8,9 +8,9 @@ export function createLineChart(selector, demographicData , attr) {
 
     let yearwiseData = getYearWiseData(demographicData , attr)
 
-console.log("In time js");
-console.log(attr);
-console.log(yearwiseData , attr);
+//console.log("In time js");
+//console.log(attr);
+//console.log(yearwiseData , attr);
     /*
     * ========================================================================
     *  Prepare data
@@ -23,7 +23,7 @@ console.log(yearwiseData , attr);
     yearwiseData.forEach(yearlyData => {
         dataset.push({
             'year': yearlyData.year,
-            "average_life_expectency": yearlyData.average_life_expectency
+            "attrTotalAvg": yearlyData.attrTotalAvg
         })
     })
 
@@ -79,11 +79,11 @@ console.log(dataset);
  };
 
     let dataXrange = d3.extent(dataset.map(yearlyData => Date.parse(yearlyData.year)));
-    let dataYrange = [d3.min(dataset.map(yearlyData => parseFloat(yearlyData.average_life_expectency))) , d3.max(dataset.map(yearlyData => parseFloat(yearlyData.average_life_expectency)))];
+    let dataYrange = [d3.min(dataset.map(yearlyData => parseFloat(yearlyData.attrTotalAvg))) , d3.max(dataset.map(yearlyData => parseFloat(yearlyData.attrTotalAvg)))];
 
     console.log(dataYrange);
-    console.log(d3.min(dataset.map(yearlyData =>  parseFloat(yearlyData.average_life_expectency))));
-    console.log(dataset.map(yearlyData => parseFloat(yearlyData.average_life_expectency)));
+    console.log(d3.min(dataset.map(yearlyData =>  parseFloat(yearlyData.attrTotalAvg))));
+    console.log(dataset.map(yearlyData => parseFloat(yearlyData.attrTotalAvg)));
     // max and min date range allowed to display
     let mindate = dataXrange[0];
     let maxdate = dataXrange[1];
@@ -134,23 +134,23 @@ console.log(dataset);
 
     let line = d3.line()
         .x(function (d) { return x(Date.parse(d.year)); })
-        .y(function (d) { return y(d.average_life_expectency); });
+        .y(function (d) { return y(d.attrTotalAvg); });
 
     let area = d3.area()
         .x(function (d) { return x(Date.parse(d.year)); })
         .y0((height_Focus))
-        .y1(function (d) { return y(d.average_life_expectency); });
+        .y1(function (d) { return y(d.attrTotalAvg); });
 
     /* === Context Chart === */
 
     let area_context = d3.area()
         .x(function (d) { return x2(Date.parse(d.year)); })
         .y0((height_context))
-        .y1(function (d) { return y2(d.average_life_expectency); });
+        .y1(function (d) { return y2(d.attrTotalAvg); });
 
     let line_context = d3.line()
         .x(function (d) { return x2(Date.parse(d.year)); })
-        .y(function (d) { return y2(d.average_life_expectency); });
+        .y(function (d) { return y2(d.attrTotalAvg); });
 
 
     /*
@@ -324,28 +324,8 @@ console.log(dataset);
 
 
 
-    /* === y axis title === */
-
-    // svg.append("text")
-    //     .attr("class", "y axis title")
-    //     .text("Monthly " + this.metricName)
-    //     .attr("x", (-(height / 2)))
-    //     .attr("y", 0)
-    //     .attr("dy", "1em")
-    //     .attr("transform", "rotate(-90)")
-    //     .style("text-anchor", "middle");
-
-    // allows zooming before any brush action
-    // zoom.x(x);
-
-    // === brush and zoom functions ===
-
-
     function brushend() {
-        // when brush stops moving:
-
-
-        // check whether chart was scrolled out of bounds and fix,
+       
         if (d3.event.selection != null) {
             let b = d3.event.selection;
 
@@ -452,15 +432,15 @@ function getYearWiseData(demographicData , attr) {
     });
 
     yearwiseData.forEach(yearlyData => {
-        let lifeExpectancyTotal = 0
+        let attrTotal = 0
         yearlyData.data.forEach(datapoint => {
         
                 //console.log("in time filter"+ attr);
            // console.log(datapoint);
        // console.log(datapoint[attr]);
-            lifeExpectancyTotal = lifeExpectancyTotal + parseFloat(datapoint[attr])
+            attrTotal = attrTotal + parseFloat(datapoint[attr])
         })
-        yearlyData.average_life_expectency = (lifeExpectancyTotal / yearlyData.data.length).toFixed(2);
+        yearlyData.attrTotalAvg = (attrTotal / yearlyData.data.length).toFixed(2);
     })
 
     return yearwiseData;

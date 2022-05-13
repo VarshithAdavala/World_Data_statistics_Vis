@@ -18,8 +18,8 @@ let selectedBrushExtents = {};
 
 export function createParallelCoordsPlot(selector, demographicData) {
 
-console.log("In parallel coordinates");
-console.log(demographicData);
+//console.log("In parallel coordinates");
+//console.log(demographicData);
     dimensions.forEach(d => {
         selectedBrushExtents[d] = [];
     })
@@ -80,8 +80,8 @@ console.log(demographicData);
     scales = [];
 
     let data = getParallelCoordData(demographicData)
-    console.log("filtered data");
-    console.log(data);
+    //console.log("filtered data");
+   // console.log(data);
 
     dimensions.forEach(dimension => {
 
@@ -125,10 +125,10 @@ console.log(demographicData);
 
     plotLine
         .on("mouseenter.tooltip", function (d) {
-            console.log(d);
+          //  console.log(d);
             if (!d.isHidden) {
                 tip.show(d);
-                console.log(d.isHidden)
+              //  console.log(d.isHidden)
 
                 d3.select(this).style("opacity", 1)
                     .style("stroke-width", 1.5)
@@ -257,7 +257,7 @@ function getParallelCoordData(demographicData) {
 
 function brush(d) {
     let brushArray = d3.event.selection;
-    console.log(brushArray);
+   // console.log(brushArray);
     if (brushArray) {
         selectedBrushExtents[d] = brushArray;
         plotLine.style("stroke-opacity", function (line) {

@@ -29,7 +29,7 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
         .html(function (d) {
             return ("<h3 style=\"margin:0\">" + d.country_name + "</h3>" +
                 "<p style=\"margin:0\">Average growth rate : " + formatValue(d.average_growth_rate) + "</p>" +
-                "<p style=\"margin:0\">Average "+attr+ ":" + formatValue(d.average_life_expectancy) + "</p>" +
+                "<p style=\"margin:0\">Average "+attr+ ":" + formatValue(d.attrTotalAvg) + "</p>" +
                 "<p style=\"margin:0\">Average midyear population : " + formatValue(d.average_midyear_population) + "</p>")
         })
 
@@ -45,36 +45,36 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
 
 
     let data = [];
-    console.log("in scatrer plot")
+   // console.log("in scatrer plot")
     demographicData.forEach(countryData => {
-    console.log(countryData)
+    //console.log(countryData)
         let growth_rate = 0
-        let life_expectancy = 0
+        let attrData = 0
         let midyear_population = 0
         countryData.yearwiseData.forEach(yearlyData => {
             growth_rate = growth_rate + parseFloat(yearlyData.data.GDP);
-            life_expectancy = life_expectancy + parseFloat(yearlyData.data[attr]);
+            attrData = attrData + parseFloat(yearlyData.data[attr]);
             midyear_population = midyear_population + parseFloat(yearlyData.data.Population);
         });
         let count = countryData.yearwiseData.length
         data.push({
             "country_name": countryData.country_name,
             "average_growth_rate": (growth_rate / count).toFixed(2),
-            "average_life_expectancy": (life_expectancy / count).toFixed(2),
+            "attrTotalAvg": (attrData / count).toFixed(2),
             "average_midyear_population": (midyear_population / count).toFixed(2),
         })
     })
 
 
     let dataXrange = d3.extent(data.map(el => parseFloat(el.average_growth_rate)));
-    let dataYrange = d3.extent(data.map(el => parseFloat(el.average_life_expectancy)));
+    let dataYrange = d3.extent(data.map(el => parseFloat(el.attrTotalAvg)));
     let dataZrange = d3.extent(data.map(el => parseFloat(el.average_midyear_population)));
 
 
     if (data.length === 1) {
         let growthRate = parseFloat(data[0].average_growth_rate);
         let absoluteGrowthRate = Math.abs(growthRate);
-        let lifeExpectancy = parseFloat(data[0].average_life_expectancy);
+        let lifeExpectancy = parseFloat(data[0].attrTotalAvg);
         let absoluteLifeExpectancy = Math.abs(lifeExpectancy);
         let midyearPop = parseFloat(data[0].average_midyear_population);
         let absoluteMidyearPop = Math.abs(midyearPop);
@@ -153,7 +153,7 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
         .enter()
         .append("circle")
         .attr("cx", function (d) { return x(d.average_growth_rate); })
-        .attr("cy", function (d) { return y(d.average_life_expectancy); })
+        .attr("cy", function (d) { return y(d.attrTotalAvg); })
         .attr("r", function (d) { return z(d.average_midyear_population); })
         .style("fill", "#a4d9f5")
         .style("opacity", "0.7")
@@ -172,7 +172,7 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
 
     bubble
         .on("mousemove.tooltip", function (d) {
-            console.log("in");
+           // console.log("in");
             tip.show(d);
             tip.style("top", d3.event.pageY + 10 + "px")
                 .style("left", d3.event.pageX + 10 + "px")
@@ -241,7 +241,7 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
             // add to selected data array if the origin of bubble lies inside the selection
             data.forEach(dataPoint => {
                 let cx = dataPoint.average_growth_rate;
-                let cy = dataPoint.average_life_expectancy;
+                let cy = dataPoint.attrTotalAvg;
                 if ((cx < Xmax && cx > Xmin) && (cy < Ymax && cy > Ymin)) {
                     selectedData.push(dataPoint);
                 }
@@ -281,76 +281,3 @@ export function createBubbleScatterplot(selector, demographicData , attr) {
     }
 }
 
-// export function updateBubbleScatterplot(filteredDemographicData) {
-
-//     let data = [];
-//     filteredDemographicData.forEach(countryData => {
-//         let growth_rate = 0
-//         let life_expectancy = 0
-//         let midyear_population = 0
-//         countryData.yearwiseData.forEach(yearlyData => {
-//             growth_rate = growth_rate + parseFloat(yearlyData.data.growth_rate);
-//             life_expectancy = life_expectancy + parseFloat(yearlyData.data.life_expectancy);
-//             midyear_population = midyear_population + parseFloat(yearlyData.data.midyear_population);
-//         });
-//         let count = countryData.yearwiseData.length
-//         data.push({
-//             "country_name": countryData.country_name,
-//             "average_growth_rate": (growth_rate / count).toFixed(2),
-//             "average_life_expectancy": (life_expectancy / count).toFixed(2),
-//             "average_midyear_population": (midyear_population / count).toFixed(2),
-//         })
-//     })
-//     let dataXrange = d3.extent(data.map(el => parseFloat(el.average_growth_rate)));
-//     let dataYrange = d3.extent(data.map(el => parseFloat(el.average_life_expectancy)));
-//     let dataZrange = d3.extent(data.map(el => parseFloat(el.average_midyear_population)));
-
-
-
-//     if (data.length === 1) {
-//         let growthRate = parseFloat(data[0].average_growth_rate);
-//         let absoluteGrowthRate = Math.abs(growthRate);
-
-//         let lifeExpectancy = parseFloat(data[0].average_life_expectancy);
-//         let absoluteLifeExpectancy = Math.abs(lifeExpectancy);
-
-//         let midyearPop = parseFloat(data[0].average_midyear_population);
-//         let absoluteMidyearPop = Math.abs(midyearPop);
-
-//         dataXrange = [growthRate - absoluteGrowthRate, growthRate + absoluteGrowthRate];
-//         dataYrange = [lifeExpectancy - absoluteLifeExpectancy, lifeExpectancy + absoluteLifeExpectancy]
-//         dataZrange = [midyearPop - absoluteMidyearPop, midyearPop + absoluteMidyearPop]
-
-//     } else {
-//         let xDiff = dataXrange[1] - dataXrange[0]
-//         dataXrange = [
-//             dataXrange[0] - xDiff / 10,
-//             dataXrange[1] + xDiff / 10,
-//         ]
-//     }
-//     console.log(dataYrange);
-
-//     x = d3.scaleLinear()
-//         .domain(dataXrange)
-//         .range([0, width]);
-//     y = d3.scaleLinear()
-//         .domain(dataYrange)
-//         .range([height, 0]);
-//     z = d3.scaleLinear()
-//         .domain(dataZrange)
-//         .range([2, 40]);
-
-//     bubble.attr("cx", function (d) { return x(d.average_growth_rate); })
-//         .attr("cy", function (d) { return y(d.average_life_expectancy); })
-//         .attr("r", function (d) { return z(d.average_midyear_population); })
-
-//     bubble.attr("fill-opacity", function (d) {
-//         if (filteredDemographicData.some(el => el.country_name === d.country_name)) {
-//             d3.select(this).attr("stroke-opacity", 1)
-//             return 1;
-//         } else {
-//             d3.select(this).attr("stroke-opacity", 0.1)
-//             return 0.1;
-//         }
-//     });
-// }

@@ -21,15 +21,8 @@
 
 
 
-  <!-- <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/button.css')}}" />
-  <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/main.css')}}" />
-  <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/d3-tip.css')}}" />
-  <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/parallel.css')}}" /> -->
+ 
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/inspcetor.css')}}">
-
-  <!-- <script src="{{ url_for('static', filename='js/parallelCoords.js')}}"></script>
-  <script src="{{ url_for('static', filename='js/worldMap.js')}}"></script>
-  <script src="{{ url_for('static', filename='js/barChart.js')}}"></script> -->
 <script src="{{ url_for('static', filename='js/donut.js')}}"></script>
 
   <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='styles/style.css')}}" />
@@ -38,10 +31,9 @@
 
   <script type="module">
   import { updateWorldMap, createWorldMap } from './static/js/worldMap.js'
-  import { createLineChart } from './static/js/line-chart.module.js'
-  import { createMdsPlot } from './static/js/mds-plot.module.js'
-  import { createBubbleScatterplot } from './static/js/bubble-scatterplot.module.js'
-  import { createParallelCoordsPlot } from './static/js/parallel-coords.module.js'
+  import { createLineChart } from './static/js/timeSeriesChart.js'
+  import { createBubbleScatterplot } from './static/js/bubble-scatterplot.js'
+  import { createParallelCoordsPlot } from './static/js/parallel-coords.js'
   import {Runtime, Library, Inspector} from "./static/js/runtime.js";
   import { define } from "./static/js/race.js";
 
@@ -416,9 +408,6 @@ function setVisible(selector, visible) {
 
   </section>
   
-  
-
-  <script src="/static/js/app.js"></script>
 
 </body>
 

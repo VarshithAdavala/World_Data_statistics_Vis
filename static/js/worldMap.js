@@ -3,8 +3,8 @@ var selectedCountries = []
 
 export function createWorldMap(selector, demographicData , attr) {
   {
-      console.log("in map:");
-      console.log(attr);
+      //console.log("in map:");
+      //console.log(attr);
     selectedCountries = [];
 
     let svgContainer = d3.select(selector)
@@ -30,16 +30,16 @@ export function createWorldMap(selector, demographicData , attr) {
       .projection(projection);
 
     d3.select(".d3-tip-world").remove();
-        console.log( demographicData);
+        //console.log( demographicData);
 
     d3.json("/static/json/countries-50m.json", function (err, worldData) {
       createMap(demographicData, worldData);
     });
 
     function createMap(demographicData, worldData) {
-          console.log("in biuboiuboiu:");
+          //console.log("in biuboiuboiu:");
           
-    console.log(demographicData);
+    //console.log(demographicData);
 
       let worldGeoJson = topojson.feature(worldData, worldData.objects.countries);
       projection.fitExtent([[0, 0], [optWidth, optHeight]], worldGeoJson)
@@ -47,16 +47,16 @@ export function createWorldMap(selector, demographicData , attr) {
 
       // .fitExtent([[0, 0], [optWidth, 0.9 *optHeight]]
         
-      let averageLifeExpectencyData = []
+      let avgAttributeData = []
       demographicData.forEach(countryData => {
-        let lifeExpectancyTotal = 0;
+        let attributeTotal = 0;
         countryData.yearwiseData.forEach(yearlyData => {
-          lifeExpectancyTotal = lifeExpectancyTotal + parseFloat(yearlyData.data[attr])
+          attributeTotal = attributeTotal + parseFloat(yearlyData.data[attr])
         })
-        let averageLifeExpectency = lifeExpectancyTotal / countryData.yearwiseData.length
-        averageLifeExpectencyData.push({
+        let attributeDataValue = attributeTotal / countryData.yearwiseData.length
+        avgAttributeData.push({
           "country_name": countryData.country_name,
-          [attr]: averageLifeExpectency
+          [attr]: attributeDataValue
         })
       })
       
@@ -77,7 +77,7 @@ export function createWorldMap(selector, demographicData , attr) {
 };
 
 
-      console.log(averageLifeExpectencyData);
+      //console.log(avgAttributeData);
       
       let tip = d3.tip()
         .attr('class', 'd3-tip d3-tip-world')
@@ -90,20 +90,20 @@ export function createWorldMap(selector, demographicData , attr) {
         .style("font-size", "8px")
         .style("text-align", "center")
         .html(function (d) {
-        console.log(formatCash(averageLifeExpectencyData.find(el => el.country_name === d.properties.name)[attr]));
+        //console.log(formatCash(avgAttributeData.find(el => el.country_name === d.properties.name)[attr]));
           return "<h3 style=\"margin:0\">" + d.properties.name + "</h3>" +
-            "<p style=\"margin:0\"> " +attr + " : " + formatCash(averageLifeExpectencyData.find(el => el.country_name === d.properties.name)[attr])+ "</p>";
+            "<p style=\"margin:0\"> " +attr + " : " + formatCash(avgAttributeData.find(el => el.country_name === d.properties.name)[attr])+ "</p>";
         })
         
       // defining color scale
-      let mapColorDomain = averageLifeExpectencyData.map(el => el[attr]);
+      let mapColorDomain = avgAttributeData.map(el => el[attr]);
       mapColorDomain = mapColorDomain.sort((a, b) => a - b);
       // getting unique values
       mapColorDomain = mapColorDomain.filter((value, index, self) => {
         return self.indexOf(value) === index;
       })
       
-    console.log(mapColorDomain)
+    //console.log(mapColorDomain)
     var thres = new Set();
     var leg = new Set();
     var temp =[]
@@ -139,8 +139,8 @@ export function createWorldMap(selector, demographicData , attr) {
         .enter().append("path")
         .attr("d", path)
         .style("fill", function (d) {
-          if (averageLifeExpectencyData.some(el => el.country_name === d.properties.name)) {
-            return myColor(averageLifeExpectencyData.find(el => el.country_name === d.properties.name)[attr]);
+          if (avgAttributeData.some(el => el.country_name === d.properties.name)) {
+            return myColor(avgAttributeData.find(el => el.country_name === d.properties.name)[attr]);
           } else {
             return "gray"
           }
@@ -153,8 +153,8 @@ export function createWorldMap(selector, demographicData , attr) {
         .on('click', click())
         .on("mousemove", function (clickedCountry) {
 
-          console.log("in")
-          console.log(clickedCountry)
+          //console.log("in")
+          //console.log(clickedCountry)
           d3.select(".d3-tip-world")
           tip.show(clickedCountry);
           tip.style("top", d3.event.pageY + 10 + "px")
@@ -216,7 +216,7 @@ export function createWorldMap(selector, demographicData , attr) {
 
 
       function click() {
-      console.log("in clicked");
+      //console.log("in clicked");
         return clickedCountry => {
           if (selectedCountries.includes(clickedCountry.properties.name) && selectedCountries.length === 1) {
             countries.style("fill-opacity", 1)
@@ -276,19 +276,19 @@ export function updateWorldMap(selector, filtereddemographicData,attr) {
 
   selectedCountries = filtereddemographicData.map(el => el.country_name);
    
-console.log(filtereddemographicData);
+//console.log(filtereddemographicData);
 
-  let averageLifeExpectencyData = []
+  let avgAttributeData = []
   filtereddemographicData.forEach(countryData => {
-    let lifeExpectancyTotal = 0;
+    let attributeTotal = 0;
     if(countryData.yearwiseData.length > 0){
       countryData.yearwiseData.forEach(yearlyData => {
-        lifeExpectancyTotal = lifeExpectancyTotal + parseFloat(yearlyData.data[attr])
+        attributeTotal = attributeTotal + parseFloat(yearlyData.data[attr])
       })
-      let averageLifeExpectency = lifeExpectancyTotal / countryData.yearwiseData.length
-      averageLifeExpectencyData.push({
+      let attributeDataValue = attributeTotal / countryData.yearwiseData.length
+      avgAttributeData.push({
         "country_name": countryData.country_name,
-        [attr]: averageLifeExpectency
+        [attr]: attributeDataValue
       })
     }
   })
@@ -320,11 +320,11 @@ let tip = d3.tip()
 .style("font-size", "8px")
 .style("text-align", "center")
 .html(function (d) {
-console.log(formatCash(averageLifeExpectencyData.find(el => el.country_name === d.properties.name)[attr]));
+//console.log(formatCash(avgAttributeData.find(el => el.country_name === d.properties.name)[attr]));
   return "<h3 style=\"margin:0\">" + d.properties.name + "</h3>" +
-    "<p style=\"margin:0\"> " +attr + " : " + formatCash(averageLifeExpectencyData.find(el => el.country_name === d.properties.name)[attr])+ "</p>";
+    "<p style=\"margin:0\"> " +attr + " : " + formatCash(avgAttributeData.find(el => el.country_name === d.properties.name)[attr])+ "</p>";
 })
-  let mapColorDomain = averageLifeExpectencyData.map(el => el[attr]);
+  let mapColorDomain = avgAttributeData.map(el => el[attr]);
       mapColorDomain = mapColorDomain.sort((a, b) => a - b);
       // getting unique values
       mapColorDomain = mapColorDomain.filter((value, index, self) => {
@@ -351,7 +351,7 @@ console.log(formatCash(averageLifeExpectencyData.find(el => el.country_name === 
 
      var legendsize=leg.size>=3 ? leg.size:3;;
      
-        console.log(thres);
+        //console.log(thres);
         var myColor = d3.scaleThreshold().domain(Array.from(thres)).range(d3.schemeBlues[legendsize]);
         var LegmyColor = d3.scaleQuantile().domain(Array.from(leg)).range(d3.schemeBlues[legendsize]);
   
@@ -394,12 +394,12 @@ else
 
 }
   countries.style("fill-opacity", function (country) {
-    if (averageLifeExpectencyData.length == 0) {
+    if (avgAttributeData.length == 0) {
       return 1;
     }
     
-    if (averageLifeExpectencyData.some(el => el.country_name === country.properties.name)) {
-      d3.select(this).style("fill", myColor(averageLifeExpectencyData.find(el => el.country_name === country.properties.name)[attr]))
+    if (avgAttributeData.some(el => el.country_name === country.properties.name)) {
+      d3.select(this).style("fill", myColor(avgAttributeData.find(el => el.country_name === country.properties.name)[attr]))
       return 1;
 
     } else {
@@ -413,8 +413,8 @@ else
   // .on('click', click())
   .on("mousemove", function (clickedCountry) {
 
-    console.log("in")
-    console.log(clickedCountry)
+    //console.log("in")
+    //console.log(clickedCountry)
     d3.select(".d3-tip-world")
     tip.show(clickedCountry);
     tip.style("top", d3.event.pageY + 10 + "px")
